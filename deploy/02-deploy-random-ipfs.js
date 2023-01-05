@@ -45,12 +45,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     tokenUris = await handleTokenUris();
   }
 
-  let vrfCoordinatorV2Address, subscriptionId;
+  let vrfCoordinatorV2Address, vrfCoordinatorV2Mock, subscriptionId;
 
   if (developmentChains.includes(network.name)) {
-    const vrfCoordinatorV2Mock = await ethers.getContract(
-      "VRFCoordinatorV2Mock"
-    );
+    vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
     vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address;
     const tx = await vrfCoordinatorV2Mock.createSubscription();
     const txRecipt = await tx.wait(1);
@@ -58,7 +56,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, FUND_AMOUNT);
   } else {
     vrfCoordinatorV2Address = networkConfig[chainId].vrfCoordinatorV2;
-    const subscriptionId = networkConfig[chainId].subscriptionId;
+    subscriptionId = networkConfig[chainId].subscriptionId;
   }
 
   log("---------------------------------------");
@@ -78,6 +76,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });
+
+  //add your contract as the consumer to the vrfCoordinatorV2Mock
+  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address);
 
   log("---------------------------------------");
 
