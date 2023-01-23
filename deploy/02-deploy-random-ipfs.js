@@ -78,7 +78,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   });
 
   //add your contract as the consumer to the vrfCoordinatorV2Mock
-  await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address);
+  if (developmentChains.includes(network.name)) {
+    await vrfCoordinatorV2Mock.addConsumer(
+      subscriptionId,
+      randomIpfsNft.address
+    );
+  }
 
   log("---------------------------------------");
 

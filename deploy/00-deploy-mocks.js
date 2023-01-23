@@ -33,4 +33,4 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   }
 };
 
-module.exports.tags = ["all", "mocks", "randomipfs", "dynamicsvg"];
+module.exports.tags = ["all", "mocks", "randomipfs", "dynamicsvg", "main"];

@@ -42,4 +42,4 @@ module.exports = async function({ getNamedAccounts, deployments }) {
   }
 };
 
-module.exports.tags = ["all", "dynamicsvg"];
+(module.exports.tags = ["all", "dynamicsvg"]), "main";
